@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import AppLayout from "./components/AppLayout";
 import CatFactsScreen from "./pages/CatFactsScreen";
+import PlanetsScreen from "./pages/PlanetsScreen";
 
 let counter = 0;
 
@@ -27,7 +28,7 @@ function App() {
       >
         increment
       </button>
-      <CatFactsScreen />
+      <PlanetsScreen />
     </AppLayout>
   );
 }
