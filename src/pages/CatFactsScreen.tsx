@@ -25,6 +25,7 @@ const CatFactsScreen = () => {
   }, []);
   return (
     <>
+      <p>Normalement ça marche quand il y a du crédit :)</p>
       {catFacts.map((fact, index) => {
         return (
           <p>

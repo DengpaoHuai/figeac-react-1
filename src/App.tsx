@@ -1,36 +1,9 @@
-import { useState } from "react";
+import { RouterProvider } from "react-router-dom";
 import "./App.css";
-import AppLayout from "./components/AppLayout";
-import CatFactsScreen from "./pages/CatFactsScreen";
-import PlanetsScreen from "./pages/PlanetsScreen";
-
-let counter = 0;
+import router from "./router/router";
 
 function App() {
-  const [counter1, setCounter1] = useState(50);
-
-  console.log("render");
-
-  const increment = () => {
-    counter++;
-    console.log(counter);
-  };
-
-  return (
-    <AppLayout title="Mon titre">
-      <p>counter : {counter}</p>
-      <button onClick={increment}>increment</button>
-      <p>counter : {counter1}</p>
-      <button
-        onClick={() => {
-          setCounter1(counter1 + 1);
-        }}
-      >
-        increment
-      </button>
-      <PlanetsScreen />
-    </AppLayout>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;

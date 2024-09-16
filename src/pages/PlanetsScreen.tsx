@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 type Planet = {
   name: string;
@@ -25,6 +26,7 @@ type PlanetResponse = {
 };
 
 const PlanetsScreen = () => {
+  const navigate = useNavigate();
   const [planets, setPlanets] = useState<PlanetResponse>({
     count: 0,
     next: "",
@@ -44,6 +46,15 @@ const PlanetsScreen = () => {
 
   return (
     <>
+      <a href="/chats-mignons">Chat mignon</a>
+      <Link to="/chats-mignons">Chat mignon</Link>
+      <button
+        onClick={() => {
+          navigate("/chats-mignons");
+        }}
+      >
+        vers la page des chats mignons
+      </button>
       {planets.results.map((planet, index) => {
         return <p key={index}>{planet.name}</p>;
       })}
