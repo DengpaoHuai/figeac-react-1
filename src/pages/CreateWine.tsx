@@ -4,8 +4,8 @@ import { z } from "zod";
 
 const wineSchema = z.object({
   name: z.string().min(3).max(10, "Trop long"),
-  year: z.number().min(1900).max(2023),
-  degree: z.number().min(0).max(25),
+  year: z.coerce.number().min(1900).max(2023),
+  degree: z.coerce.number().min(0).max(25),
 });
 
 type Wine = z.infer<typeof wineSchema>;
