@@ -36,7 +36,11 @@ const CreateWine = () => {
         />
         {errors.name && <p>{errors.name.message}</p>}
         <input placeholder="Year" {...register("year")} />
+
+        {errors.year && <p>{errors.year.message}</p>}
+
         <input placeholder="degree" {...register("degree")} />
+        {errors.degree && <p>{errors.degree.message}</p>}
 
         <button type="submit">Create</button>
       </form>
