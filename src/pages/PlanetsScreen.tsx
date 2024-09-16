@@ -17,23 +17,52 @@ type Planet = {
   url: string;
 };
 
+type PlanetResponse = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Planet[];
+};
+
 const PlanetsScreen = () => {
-  const [planets, setPlanets] = useState<Planet[]>([]);
+  const [planets, setPlanets] = useState<PlanetResponse>({
+    count: 0,
+    next: "",
+    previous: "",
+    results: [],
+  });
+
+  const getData = async (url: string) => {
+    const response = await fetch(url);
+    const data: PlanetResponse = await response.json();
+    setPlanets(data);
+  };
 
   useEffect(() => {
-    fetch("https://swapi.dev/api/planets/")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setPlanets(data.results);
-      });
+    getData("https://swapi.dev/api/planets/");
   }, []);
 
   return (
     <>
-      {planets.map((planet, index) => {
+      {planets.results.map((planet, index) => {
         return <p key={index}>{planet.name}</p>;
       })}
+      <button
+        disabled={!planets.previous}
+        onClick={() => {
+          if (planets.previous) getData(planets.previous);
+        }}
+      >
+        précédent
+      </button>
+      <button
+        disabled={!planets.next}
+        onClick={() => {
+          if (planets.next) getData(planets.next);
+        }}
+      >
+        suivant
+      </button>
     </>
   );
 };
