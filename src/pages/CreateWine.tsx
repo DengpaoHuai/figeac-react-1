@@ -5,6 +5,7 @@ import { Wine } from "../types/wine.type";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { WineContext } from "../contexts/WineContextProvider";
+import useWine from "../store/useWineStore";
 
 const wineSchema = z.object({
   name: z.string().min(3).max(10, "Trop long"),
@@ -21,7 +22,7 @@ const CreateWine = () => {
     resolver: zodResolver(wineSchema),
   });
   const navigate = useNavigate();
-  const { createWine } = useContext(WineContext);
+  const { createWine } = useWine();
 
   const onSubmit = async (values: Omit<Wine, "_id">) => {
     await createWine(values);

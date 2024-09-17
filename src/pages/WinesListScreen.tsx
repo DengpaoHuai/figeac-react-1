@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import useWine from "../store/useWineStore";
 
 const WinesListScreen = () => {
-  const { wines, loading } = useWine();
+  const { wines, loading, deleteWineByIdButWithDifferentName } = useWine();
 
   return (
     <>
@@ -15,7 +15,7 @@ const WinesListScreen = () => {
           <p>{wine.degree}</p>
           <button
             onClick={() => {
-              // deleteWine(wine._id);
+              deleteWineByIdButWithDifferentName(wine._id);
             }}
           >
             delete
