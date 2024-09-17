@@ -55,8 +55,8 @@ const PlanetsScreen = () => {
       >
         vers la page des chats mignons
       </button>
-      {planets.results.map((planet, index) => {
-        return <p key={index}>{planet.name}</p>;
+      {planets.results.map((planet) => {
+        return <p key={planet.url}>{planet.name}</p>;
       })}
       <button
         disabled={!planets.previous}
