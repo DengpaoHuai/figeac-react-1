@@ -1,10 +1,12 @@
 import { createContext, useEffect, useState } from "react";
 import { Wine } from "../types/wine.type";
+import { deleteWineById, getWines, postWine } from "../services/wines.service";
 
 type WineContext = {
   wines: Wine[];
-  createWine: (wine: Wine) => void;
+  createWine: (wine: Omit<Wine, "_id">) => void;
   loading: boolean;
+  deleteWine: (id: string) => void;
 };
 
 export const WineContext = createContext<WineContext>({} as WineContext);
@@ -19,23 +21,26 @@ const WineContextProvider: React.FC<WineContextProviderProps> = ({
 
   useEffect(() => {
     setLoading(true);
-    fetch(
-      "https://crudcrud.com/api/7f061ddf3d1548d6aea97b41cd358664/wines"
-    ).then((response) => {
-      response.json().then((data) => {
-        console.log(data);
-        setWines(data);
-        setLoading(false);
-      });
+    getWines().then(({ data }) => {
+      setWines(data);
+      setLoading(false);
     });
   }, []);
 
-  const createWine = (wine: Wine) => {
-    setWines([...wines, wine]);
+  const createWine = async (wine: Omit<Wine, "_id">) => {
+    await postWine(wine).then(({ data }) => {
+      setWines([...wines, data]);
+    });
+  };
+
+  const deleteWine = (id: string) => {
+    deleteWineById(id).then((id) => {
+      setWines(wines.filter((item) => item._id !== id));
+    });
   };
 
   return (
-    <WineContext.Provider value={{ wines, loading, createWine }}>
+    <WineContext.Provider value={{ wines, loading, createWine, deleteWine }}>
       {children}
     </WineContext.Provider>
   );

@@ -1,9 +1,9 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-import useWine from "../store/useWineStore";
+import { WineContext } from "../contexts/WineContextProvider";
 
 const WinesListScreen = () => {
-  const { wines, loading } = useWine();
-
+  const { wines, deleteWine, loading } = useContext(WineContext);
   return (
     <>
       {loading && <p>chargement...</p>}
@@ -15,7 +15,7 @@ const WinesListScreen = () => {
           <p>{wine.degree}</p>
           <button
             onClick={() => {
-              // deleteWine(wine._id);
+              deleteWine(wine._id);
             }}
           >
             delete

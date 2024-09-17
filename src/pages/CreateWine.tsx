@@ -23,20 +23,9 @@ const CreateWine = () => {
   const navigate = useNavigate();
   const { createWine } = useContext(WineContext);
 
-  const onSubmit = (values: Omit<Wine, "_id">) => {
-    console.log(values);
-    fetch("https://crudcrud.com/api/7f061ddf3d1548d6aea97b41cd358664/wines", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    }).then((response) => {
-      response.json().then((data: Wine) => {
-        createWine(data);
-        navigate("/list-wine");
-      });
-    });
+  const onSubmit = async (values: Omit<Wine, "_id">) => {
+    await createWine(values);
+    navigate("/list-wine");
   };
 
   return (

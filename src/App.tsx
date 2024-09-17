@@ -1,14 +1,9 @@
 import { RouterProvider } from "react-router-dom";
 import "./App.css";
 import router from "./router/router";
-import WineContextProvider from "./contexts/WineContextProvider";
 
 function App() {
-  return (
-    <WineContextProvider>
-      <RouterProvider router={router}></RouterProvider>
-    </WineContextProvider>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;
