@@ -22,7 +22,7 @@ describe("PlanetsList Component", () => {
     });
 
     render(<PlanetsScreen />);
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(screen.getByText("Chargement...")).toBeInTheDocument();
   });
 
   it("affiche un message d'erreur lorsque le fetch échoue", () => {
@@ -64,5 +64,6 @@ describe("PlanetsList Component", () => {
 
     render(<PlanetsScreen />);
     expect(screen.getByText("Tatooine")).toBeInTheDocument();
+    expect(screen.getByText("Rotation period : 23")).toBeInTheDocument();
   });
 });

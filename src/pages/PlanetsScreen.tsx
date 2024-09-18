@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getPlanets } from "../services/planets.service";
+import CustomButton from "../components/ui/CustomButton";
 
-const PlanetsScreen = () => {
+const PlanetsScreen: () => JSX.Element = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useQuery({
@@ -15,19 +16,20 @@ const PlanetsScreen = () => {
 
   return (
     <>
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <p>Chargement...</p>}
       {error && <p>Failed to fetch data</p>}
-      <a href="/chats-mignons">Chat mignon</a>
+      <a yo-est="toto" href="/chats-mignons">
+        Chat mignon
+      </a>
       <Link to="/chats-mignons">Chat mignon</Link>
-      <button
-        onClick={() => {
-          navigate("/chats-mignons");
-        }}
-      >
-        vers la page des chats mignons
-      </button>
+      <web-component></web-component>
       {data?.results.map((planet) => {
-        return <p key={planet.url}>{planet.name}</p>;
+        return (
+          <Fragment key={planet.url}>
+            <p>{planet.name}</p>
+            <p>Rotation period : {planet.rotation_period}</p>
+          </Fragment>
+        );
       })}
       <button
         onClick={() => {

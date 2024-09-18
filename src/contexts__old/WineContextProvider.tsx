@@ -21,11 +21,22 @@ const WineContextProvider: React.FC<WineContextProviderProps> = ({
 
   useEffect(() => {
     setLoading(true);
+    const winesFromSession = localStorage.getItem("wines");
+    if(winesFromSession){
+      setWines(JSON.parse(winesFromSession));
+      return setLoading(false);
+    }
     getWines().then(({ data }) => {
       setWines(data);
       setLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    if(wines.length){
+      localStorage.setItem("wines", JSON.stringify(wines));
+    }
+  }, [wines])
 
   const createWine = async (wine: Omit<Wine, "_id">) => {
     await postWine(wine).then(({ data }) => {

@@ -2,9 +2,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Wine } from "../types/wine.type";
-import { useNavigate } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postWine } from "../services/wines.service";
+import { useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getWineById, postWine, updateWine } from "../services/wines.service";
 
 const wineSchema = z.object({
   name: z.string().min(3).max(10, "Trop long"),
@@ -12,27 +12,42 @@ const wineSchema = z.object({
   degree: z.coerce.number().min(0).max(25),
 });
 
-const CreateWine = () => {
+const UpdateWine = () => {
+  const params = useParams();
+  const id = params.id as string;
+  const { data: wine } = useQuery<Wine>({
+    queryKey: ["wine", id],
+    queryFn: () => getWineById(id),
+  });
+  console.log(wine);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Omit<Wine, "_id">>({
     resolver: zodResolver(wineSchema),
+    defaultValues: {
+      name: wine?.name,
+      year: wine?.year,
+      degree: wine?.degree,
+    },
   });
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: postWine,
+    mutationFn: (payload: Omit<Wine, "_id">) => updateWine(id, payload),
     mutationKey: ["wines"],
-    onSuccess: (data) => {
+    onSuccess: (data: Wine) => {
       queryClient.invalidateQueries({
         queryKey: ["wines"],
       });
-      queryClient.setQueryData(["wines"], (old: Wine[] | undefined) => [
-        ...old,
-        data,
-      ]);
+      const wines = queryClient.getQueryData<Wine[]>(["wines"]);
+      if (wines) {
+        queryClient.setQueryData(
+          ["wines"],
+          wines.map((w) => (w._id === id ? data : w))
+        );
+      }
       navigate("/list-wine");
     },
   });
@@ -64,10 +79,10 @@ const CreateWine = () => {
         <input placeholder="degree" {...register("degree")} />
         {errors.degree && <p>{errors.degree.message}</p>}
 
-        <button type="submit">Create</button>
+        <button type="submit">Update</button>
       </form>
     </div>
   );
 };
 
-export default CreateWine;
+export default UpdateWine;

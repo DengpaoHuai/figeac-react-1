@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const crucrud = axios.create({
-  baseURL: "https://crudcrud.com/api/90548ee5b5984b50a710eb7e2e472af3",
+  baseURL: "https://crudcrud.com/api/176ec36c7cc24bd7b4fea6120ca68776",
 });
 
 export default crucrud;
