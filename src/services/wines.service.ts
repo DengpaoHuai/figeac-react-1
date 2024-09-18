@@ -10,12 +10,12 @@ const addDelay = async (ms: number) => {
 export const getWines = async () => {
   await addDelay(2000);
   const response = await crucrud.get("/wines");
-  return response;
+  return response.data;
 };
 
 export const postWine = async (wine: Omit<Wine, "_id">) => {
   const response = await crucrud.post("/wines", wine);
-  return response;
+  return response.data;
 };
 
 export const deleteWineById = async (id: string) => {

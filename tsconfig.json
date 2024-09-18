@@ -5,6 +5,9 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions" : {
-    "allowJs": true
-  }
+    "allowJs": true,
+    "types": ["@testing-library/jest-dom"],
+    "typeRoots": ["node_modules/@types", "node_modules/@testing-library"]
+  },
+
 }

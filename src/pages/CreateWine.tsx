@@ -3,9 +3,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Wine } from "../types/wine.type";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { WineContext } from "../contexts/WineContextProvider";
-import useWine from "../store/useWineStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postWine } from "../services/wines.service";
 
 const wineSchema = z.object({
   name: z.string().min(3).max(10, "Trop long"),
@@ -22,11 +21,24 @@ const CreateWine = () => {
     resolver: zodResolver(wineSchema),
   });
   const navigate = useNavigate();
-  const { createWine } = useWine();
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: postWine,
+    mutationKey: ["wines"],
+    onSuccess: ({ data }) => {
+      queryClient.invalidateQueries({
+        queryKey: ["wines"],
+      });
+      /* queryClient.setQueryData(["wines"], (old: Wine[] | undefined) => [
+        ...old,
+        data,
+      ]);*/
+      navigate("/list-wine");
+    },
+  });
 
   const onSubmit = async (values: Omit<Wine, "_id">) => {
-    await createWine(values);
-    navigate("/list-wine");
+    mutation.mutate(values);
   };
 
   return (

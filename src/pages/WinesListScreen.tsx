@@ -1,12 +1,29 @@
-import { Link, useLoaderData } from "react-router-dom";
-import useWine from "../store/useWineStore";
+import { Link } from "react-router-dom";
+import { getWines } from "../services/wines.service";
+import { useQuery } from "@tanstack/react-query";
+import { Wine } from "../types/wine.type";
 
 const WinesListScreen = () => {
-  const { wines, loading, deleteWineByIdButWithDifferentName } = useWine();
-
+  const {
+    data: wines,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery<Wine[]>({
+    queryKey: ["wines"],
+    queryFn: getWines,
+  });
   return (
     <>
-      {/*loading && <p>chargement...</p>*/}
+      <button
+        onClick={() => {
+          refetch();
+        }}
+      >
+        refresh
+      </button>
+      {isLoading && <p>chargement...</p>}
+      {error && <p>Erreur lors du chargement des données</p>}
       <Link to="/create-wine">Créer un vin</Link>
       {wines?.map((wine) => (
         <div key={wine._id}>

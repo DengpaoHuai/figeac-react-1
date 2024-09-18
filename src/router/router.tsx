@@ -25,11 +25,11 @@ const router = createBrowserRouter([
         element: <CreateWine></CreateWine>,
       },
       {
-        loader: async () => {
+        /*  loader: async () => {
           const response = await getWines();
           useWineStore.setState({ wines: response.data });
           return response.data;
-        },
+        },*/
         path: "/list-wine",
         element: <WinesListScreen></WinesListScreen>,
       },
