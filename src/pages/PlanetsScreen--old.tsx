@@ -1,7 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getPlanets } from "../services/planets.service";
 
 type Planet = {
   name: string;
@@ -29,13 +27,22 @@ type PlanetResponse = {
 
 const PlanetsScreen = () => {
   const navigate = useNavigate();
-  const [page, setPage] = useState(1);
-  const { data } = useQuery({
-    queryKey: ["planets", page],
-    queryFn: () => getPlanets(page),
-    staleTime: 5000,
-    gcTime: 60000 * 60 * 24,
+  const [planets, setPlanets] = useState<PlanetResponse>({
+    count: 0,
+    next: "",
+    previous: "",
+    results: [],
   });
+
+  const getData = async (url: string) => {
+    const response = await fetch(url);
+    const data: PlanetResponse = await response.json();
+    setPlanets(data);
+  };
+
+  useEffect(() => {
+    getData("https://swapi.dev/api/planets/");
+  }, []);
 
   return (
     <>
@@ -48,19 +55,21 @@ const PlanetsScreen = () => {
       >
         vers la page des chats mignons
       </button>
-      {data?.results.map((planet) => {
+      {planets.results.map((planet) => {
         return <p key={planet.url}>{planet.name}</p>;
       })}
       <button
+        disabled={!planets.previous}
         onClick={() => {
-          setPage(page - 1);
+          if (planets.previous) getData(planets.previous);
         }}
       >
         précédent
       </button>
       <button
+        disabled={!planets.next}
         onClick={() => {
-          setPage(page + 1);
+          if (planets.next) getData(planets.next);
         }}
       >
         suivant

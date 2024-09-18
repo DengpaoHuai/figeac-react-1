@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import useWine from "../store/useWineStore";
 
 const WinesListScreen = () => {
@@ -6,16 +6,16 @@ const WinesListScreen = () => {
 
   return (
     <>
-      {loading && <p>chargement...</p>}
+      {/*loading && <p>chargement...</p>*/}
       <Link to="/create-wine">Créer un vin</Link>
-      {wines.map((wine) => (
+      {wines?.map((wine) => (
         <div key={wine._id}>
           <h2>{wine.name}</h2>
           <p>{wine.year}</p>
           <p>{wine.degree}</p>
           <button
             onClick={() => {
-              deleteWineByIdButWithDifferentName(wine._id);
+              //deleteWineByIdButWithDifferentName(wine._id);
             }}
           >
             delete

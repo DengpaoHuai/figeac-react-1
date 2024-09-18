@@ -1,7 +1,14 @@
 import { Wine } from "../types/wine.type";
 import crucrud from "./instances/crudcrud";
 
+const addDelay = async (ms: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
+
 export const getWines = async () => {
+  await addDelay(2000);
   const response = await crucrud.get("/wines");
   return response;
 };
